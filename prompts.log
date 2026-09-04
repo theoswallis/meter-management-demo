@@ -12,3 +12,15 @@ Validate my docker/docker-compose installation and test that my docker-compose.y
 
 [2026-09-04 14:26:07 -06:00]
 Am I missing anything to ensure the containers shutdown gracefully when terminated?
+
+[2026-09-04 14:38:55 -06:00]
+add a .env and .env.example file to the new server directory with variables DATABASE_URL and PORT
+
+[2026-09-04 15:04:52 -06:00]
+Add POSTGRES_USER, POSTGRES_PASSWORD, and POSTGRES_DB to the .env files
+
+[2026-09-04 15:07:55 -06:00]
+set up drizzle config in /server/ using dotenv to provide db credentials
+
+[2026-09-04 15:16:53 -06:00]
+write and run a temporary script to validate that we can spin up the pg db with docker compose and successfully access it by referencing environment variables for creds
