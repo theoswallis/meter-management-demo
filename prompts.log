@@ -1,0 +1,14 @@
+[2026-09-04 13:46:29 -06:00]
+Is the CLI up to date?
+
+[2026-09-04 14:04:32 -06:00]
+I am working on a take-home project before a job interview. AI tooling is allowed, and must be disclosed in the README. Add an "AI Disclosure" section to the README for me to fill out as I go. For further accountability, I would like you to record any prompts I send in this session to a separate "prompts.log" file at the project root, and exempt "prompts.log" from .gitignore. Also add the instruction for logging prompts to a new file at the project root ".GEMINI.md" for further conversations to follow. Make the necessary changes on the local filesystem and report back.
+
+[2026-09-04 14:12:29 -06:00]
+Go ahead and add what I've already prompted to kick off the log
+
+[2026-09-04 14:17:57 -06:00]
+Validate my docker/docker-compose installation and test that my docker-compose.yml is functional.
+
+[2026-09-04 14:26:07 -06:00]
+Am I missing anything to ensure the containers shutdown gracefully when terminated?
