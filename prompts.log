@@ -24,3 +24,21 @@ set up drizzle config in /server/ using dotenv to provide db credentials
 
 [2026-09-04 15:16:53 -06:00]
 write and run a temporary script to validate that we can spin up the pg db with docker compose and successfully access it by referencing environment variables for creds
+
+[2026-09-04 15:24:41 -06:00]
+scaffold /server/ for me to begin writing source code
+
+[2026-09-04 16:41:36 -06:00]
+I've designed the db schema and written the initial migration to the generated 0000 sql file. Do a quick look over for potential oversights or antipatterns and let me know what you find.
+
+[2026-09-04 16:50:02 -06:00]
+schema drift doesn't matter, schema.ts is still the scaffolded and will be updated to match the migration. Go ahead and add the missing status column to the meters table. I agree, read_on should be changed to a timestamp instead of a date. Go ahead and update it to read_at, update it to timestamptz, and remove the constraint. As of now, all the index and constraint optimization is speculative, and I have read conflicting documentation on behavior. I don't currently have a database profiler set up. Can you set something up to properly benchmark performance with/without these indices? And explain what you set up and why.
+
+[2026-09-04 16:55:07 -06:00]
+Go ahead and save the results to BENCHMARK.md in the project root so I can go over it when presenting, and make the edits to the migration file to achieve this optimization.
+
+[2026-09-04 16:57:51 -06:00]
+seems like drizzle is generating a good amount of files under /server/drizzle/meta - are those worth adding to .gitignore or are they important enough to track?
+
+[2026-09-04 16:59:41 -06:00]
+alright, with the db design ironed out, go ahead and update src/db/schema.ts to match our actual design, then do a once-over to see if there are any other loose ends in terms of implementing the db design.

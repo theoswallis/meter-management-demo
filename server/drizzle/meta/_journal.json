@@ -1,1 +1,13 @@
-{"version":"7","dialect":"postgresql","entries":[]}
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1788557206352,
+      "tag": "0000_faithful_silk_fever",
+      "breakpoints": true
+    }
+  ]
+}
