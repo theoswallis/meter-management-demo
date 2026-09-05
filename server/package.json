@@ -15,10 +15,10 @@
     "db:studio": "drizzle-kit studio",
     "seed": "tsx src/db/seed.ts",
     "test": "tsx --test --test-concurrency=1 test/**/*.test.ts",
-    "verify:usage": "node scripts/verify-usage-view.js",
     "benchmark:db": "node scripts/benchmark-indexes.js"
   },
   "dependencies": {
+    "@fastify/cors": "^11.3.0",
     "dotenv": "^17.4.2",
     "drizzle-orm": "^0.45.2",
     "fastify": "^5.12.3",

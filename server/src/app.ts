@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import cors from '@fastify/cors';
 import { env } from './config/env.js';
 import { errorHandler } from './errors/errorHandler.js';
 import { healthRoutes } from './routes/health.js';
@@ -26,6 +27,11 @@ export function buildApp(options: AppOptions = {}) {
 
   const database = options.db || defaultDb;
   app.decorate('db', database);
+
+  // Register CORS
+  app.register(cors, {
+    origin: true,
+  });
 
   // Register centralized error handler
   app.setErrorHandler(errorHandler);

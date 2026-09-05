@@ -85,4 +85,8 @@ What would it take for docker-compose to spin up the server now that we have bui
 [2026-09-04 22:10:23 -06:00]
 Go ahead and generate the Dockerfile, .dockerignore, and wire it up in docker-compose.yml then give it a test run to ensure it all spins up and shuts down gracefully
 
+[2026-09-04 22:26:14 -06:00]
+I'm ready to move into frontend dev. Before we do, please do a quick once-over everything we've built so far and let me know if there are any loose ends or oversights. Also, let me know what non-obvious decisions or omissions exist in the code, and I will look into documenting them.
+[2026-09-04 22:30:50 -06:00]
+wire up cors and remove the stale script please
 

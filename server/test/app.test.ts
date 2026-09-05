@@ -94,6 +94,33 @@ describe('Integration Test Harness with PGlite', () => {
       assert.ok(typeof body.uptime === 'number');
       assert.ok(body.timestamp !== undefined);
     });
+
+    it('returns CORS headers on request with Origin header', async () => {
+      const response = await ctx.app.inject({
+        method: 'GET',
+        url: '/health',
+        headers: {
+          origin: 'http://localhost:5173',
+        },
+      });
+
+      assert.equal(response.statusCode, 200);
+      assert.equal(response.headers['access-control-allow-origin'], 'http://localhost:5173');
+    });
+
+    it('handles CORS preflight OPTIONS request', async () => {
+      const response = await ctx.app.inject({
+        method: 'OPTIONS',
+        url: '/api/service-locations',
+        headers: {
+          origin: 'http://localhost:5173',
+          'access-control-request-method': 'POST',
+        },
+      });
+
+      assert.equal(response.statusCode, 204);
+      assert.equal(response.headers['access-control-allow-origin'], 'http://localhost:5173');
+    });
   });
 
   describe('Seeded Database State in PGlite', () => {
