@@ -5,6 +5,7 @@ import { serviceLocations } from '../db/schema.js';
 import {
   createServiceLocationSchema,
   queryServiceLocationsSchema,
+  updateServiceLocationSchema,
 } from '../schemas/apiSchemas.js';
 
 export const serviceLocationRoutes: FastifyPluginAsync = async (fastify) => {
@@ -107,4 +108,54 @@ export const serviceLocationRoutes: FastifyPluginAsync = async (fastify) => {
 
     return locationTree;
   });
+
+  // 5. PATCH /api/service-locations/:id - Update service location details
+  const updateServiceLocationHandler = async (
+    request: import('fastify').FastifyRequest<{ Params: { id: string } }>,
+    reply: import('fastify').FastifyReply
+  ) => {
+    const id = parseInt(request.params.id, 10);
+    if (isNaN(id)) {
+      return reply.status(400).send({
+        statusCode: 400,
+        error: 'Bad Request',
+        message: 'Invalid service location ID format',
+      });
+    }
+
+    const existing = await db.query.serviceLocations.findFirst({
+      where: eq(serviceLocations.id, id),
+    });
+
+    if (!existing) {
+      return reply.status(404).send({
+        statusCode: 404,
+        error: 'Not Found',
+        message: `Service location not found with ID ${id}`,
+      });
+    }
+
+    const input = updateServiceLocationSchema.parse(request.body);
+
+    const updateValues: Record<string, any> = {
+      updatedAt: new Date(),
+    };
+
+    if (input.addressLine1 !== undefined) updateValues.addressLine1 = input.addressLine1;
+    if (input.addressLine2 !== undefined) updateValues.addressLine2 = input.addressLine2;
+    if (input.city !== undefined) updateValues.city = input.city;
+    if (input.state !== undefined) updateValues.state = input.state;
+    if (input.postalCode !== undefined) updateValues.postalCode = input.postalCode;
+
+    const [updated] = await db
+      .update(serviceLocations)
+      .set(updateValues)
+      .where(eq(serviceLocations.id, id))
+      .returning();
+
+    return updated;
+  };
+
+  fastify.patch('/api/service-locations/:id', updateServiceLocationHandler);
+  fastify.put('/api/service-locations/:id', updateServiceLocationHandler);
 };

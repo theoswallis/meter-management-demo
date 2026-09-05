@@ -152,5 +152,71 @@ describe('Service Locations API', () => {
       assert.match(body.message, /service location not found/i);
     });
   });
+
+  describe('PATCH /api/service-locations/:id', () => {
+    it('updates service location attributes successfully', async () => {
+      const response = await ctx.app.inject({
+        method: 'PATCH',
+        url: '/api/service-locations/1',
+        payload: {
+          addressLine1: '1042 Maple Street Apt B',
+          addressLine2: '2nd Floor',
+          city: 'Boulder',
+          state: 'CO',
+          postalCode: '80302',
+        },
+      });
+
+      assert.equal(response.statusCode, 200);
+      const body = JSON.parse(response.body);
+      assert.equal(body.id, 1);
+      assert.equal(body.addressLine1, '1042 Maple Street Apt B');
+      assert.equal(body.addressLine2, '2nd Floor');
+      assert.equal(body.city, 'Boulder');
+      assert.equal(body.state, 'CO');
+      assert.equal(body.postalCode, '80302');
+      assert.ok(body.updatedAt);
+    });
+
+    it('returns 400 Bad Request if update payload is empty', async () => {
+      const response = await ctx.app.inject({
+        method: 'PATCH',
+        url: '/api/service-locations/1',
+        payload: {},
+      });
+
+      assert.equal(response.statusCode, 400);
+      const body = JSON.parse(response.body);
+      assert.equal(body.statusCode, 400);
+      assert.equal(body.message, 'Validation error');
+      assert.ok(body.issues.some((i: any) => /at least one field/i.test(i.message)));
+    });
+
+    it('returns 400 Bad Request if postal code or state format is invalid', async () => {
+      const response = await ctx.app.inject({
+        method: 'PATCH',
+        url: '/api/service-locations/1',
+        payload: {
+          state: 'COLORADO',
+        },
+      });
+
+      assert.equal(response.statusCode, 400);
+    });
+
+    it('returns 404 Not Found when updating a non-existent location', async () => {
+      const response = await ctx.app.inject({
+        method: 'PATCH',
+        url: '/api/service-locations/999999',
+        payload: {
+          city: 'Aspen',
+        },
+      });
+
+      assert.equal(response.statusCode, 404);
+      const body = JSON.parse(response.body);
+      assert.match(body.message, /not found/i);
+    });
+  });
 });
 

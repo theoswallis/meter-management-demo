@@ -19,6 +19,27 @@ export const createServiceLocationSchema = z.object({
 
 export type CreateServiceLocationInput = z.infer<typeof createServiceLocationSchema>;
 
+export const updateServiceLocationSchema = z
+  .object({
+    addressLine1: z.string().min(1, 'Address line 1 cannot be empty').optional(),
+    addressLine2: z.string().nullable().optional(),
+    city: z.string().min(1, 'City cannot be empty').optional(),
+    state: z
+      .string()
+      .length(2, 'State must be a 2-letter uppercase postal code')
+      .regex(/^[A-Z]{2}$/, 'State must consist of 2 uppercase letters')
+      .optional(),
+    postalCode: z
+      .string()
+      .regex(/^[0-9]{5}(-[0-9]{4})?$/, 'Postal code must be in 12345 or 12345-6789 format')
+      .optional(),
+  })
+  .refine((data) => Object.keys(data).length > 0, {
+    message: 'At least one field must be provided to update',
+  });
+
+export type UpdateServiceLocationInput = z.infer<typeof updateServiceLocationSchema>;
+
 export const queryServiceLocationsSchema = z.object({
   limit: z.coerce.number().int().positive().max(100).default(20),
   offset: z.coerce.number().int().nonnegative().default(0),
