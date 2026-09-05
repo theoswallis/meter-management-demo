@@ -42,3 +42,15 @@ seems like drizzle is generating a good amount of files under /server/drizzle/me
 
 [2026-09-04 16:59:41 -06:00]
 alright, with the db design ironed out, go ahead and update src/db/schema.ts to match our actual design, then do a once-over to see if there are any other loose ends in terms of implementing the db design.
+
+[2026-09-04 17:36:27 -06:00]
+generate another migration for me to add to, and tell me how you did so I can do so myself in the future.
+
+[2026-09-04 17:50:57 -06:00]
+write a new file server/src/db/seed.ts to seed the db with some data for the demo. There are a few cases I want to simulate that should be reflected in the data: a service location with only one service point (e.g. single family home), a service location with 50 service points (multifam), a service point with multiple meters of the same type (e.g. separately metered outlets within an apt.), a service point with no meters, a service point with just one meter type absent, a meter that gets replaced, a meter that rolls over, a meter with an obvious spike, a meter checking in but not ticking up, a meter that stopped checking in for a long period of time, then began checking in again (e.g. data collector goes down, takes a while to be replaced). Organize the different cases within the seed script, I gave them to you in the order that I thought them up, not organized. Wire up the seed script to be run with npm run seed
+
+[2026-09-04 18:02:52 -06:00]
+write a temporary script to verify the math from the usage view now that we have data to work with.
+
+[2026-09-04 19:59:11 -06:00]
+I had to step away from my desk for a couple of hours, please give me a short summary of what we've managed to build so far.
