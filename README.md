@@ -1,6 +1,10 @@
 # meter-management-demo
 Demo app for the tracking and management of utility meters.
 
+## Prerequisites
+- Docker Desktop
+- Ports 8080, 3000, and 5433 open
+
 ## Setup
 The entire application (PostgreSQL database, Fastify API, and Vue 3 Frontend) is containerized with Docker Compose. Run a single command from the project root:
 
@@ -40,9 +44,17 @@ docker compose down
 
 ## AI Disclosure
 
-- **Tools Used:** Google Gemini Web App: Conversational planning, organization, and time management.
+- **Tools Used:**
   - Google Gemini Web App: Conversational planning, organization, and time management.
   - Google agy CLI: Embedded coding assistance.
   - Claude Code: One quick pass as a coding assistant over UI to tidy formatting. Review passes to identify loose ends.
 - **Prompts Log:** All coding assistant prompts are logged to `prompts.log`.
 
+## Open Items
+
+The following were found during my final review, which I would address if I were to continue work on this project.
+- User input for installedOn accepts dates that don't exist as long as they are formatted as dates e.g. "2026-13-32"
+- Missing a unique constraint on meter readings' meter_id and read_at, duplicate timestamps on meter reads for the same meter breaks pagination and usage calcs
+- Old query params in the backend survived pruning. You can query service locations and pass a city to filter on, but it doesn't actually filter, and you can query readings with a date-range, but it ignores that you passed start/end dates.
+- Raw SQL slipped into meters.ts that subverts drizzle type matching. Kinda defeats the purpose of typescript if you subvert your types. 
+- Frontend hits the service locations' tree endpoint once for each service location. Bad implementation given that the backend has bulk queries aplenty.
