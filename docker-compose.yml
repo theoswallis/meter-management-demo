@@ -4,18 +4,36 @@ services:
     container_name: pg-db
     stop_grace_period: 30s
     environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER:-meter_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pg_password}
+      POSTGRES_DB: ${POSTGRES_DB:-meter_db}
     ports:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-meter_user} -d ${POSTGRES_DB:-meter_db}"]
       interval: 5s
       timeout: 3s
       retries: 10
 
+  api:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: meter-api
+    stop_grace_period: 15s
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - HOST=0.0.0.0
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-meter_user}:${POSTGRES_PASSWORD:-pg_password}@db:5432/${POSTGRES_DB:-meter_db}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
 volumes:
-  pgdata:
+  pgdata:

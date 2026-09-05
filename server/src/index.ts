@@ -1,11 +1,15 @@
 import { buildApp } from './app.js';
 import { env } from './config/env.js';
 import { pool } from './db/client.js';
+import { runMigrations } from './db/migrate.js';
 
 const app = buildApp();
 
 async function start() {
   try {
+    if (env.NODE_ENV !== 'test') {
+      await runMigrations();
+    }
     await app.listen({ port: env.PORT, host: env.HOST });
     app.log.info(`🚀 Server listening at http://${env.HOST}:${env.PORT}`);
   } catch (err) {

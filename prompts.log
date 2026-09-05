@@ -79,4 +79,10 @@ I agree with all proposed additional endpoints. Please implement using TDD. Scra
 [2026-09-04 22:00:28 -06:00]
 [Approved] test_design_walkthrough.md
 
+[2026-09-04 22:03:25 -06:00]
+What would it take for docker-compose to spin up the server now that we have built out the API?
+
+[2026-09-04 22:10:23 -06:00]
+Go ahead and generate the Dockerfile, .dockerignore, and wire it up in docker-compose.yml then give it a test run to ensure it all spins up and shuts down gracefully
+
 
