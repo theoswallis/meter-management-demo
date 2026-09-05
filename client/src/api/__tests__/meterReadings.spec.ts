@@ -3,7 +3,6 @@ import { httpClient } from '../../http/httpClient.js';
 import {
   getMeterReadings,
   createMeterReading,
-  createBulkMeterReadings,
   getMeterUsage,
 } from '../meterReadings.js';
 
@@ -72,32 +71,6 @@ describe('meterReadings API - Serialization & Transformations', () => {
     });
   });
 
-  it('transforms all Date objects in bulk reading batch to ISO strings', async () => {
-    const postSpy = vi.spyOn(httpClient, 'post').mockResolvedValueOnce({
-      data: { count: 2, data: [] },
-      status: 201,
-      statusText: 'Created',
-      headers: new Headers(),
-      ok: true,
-    });
-
-    const d1 = new Date('2026-02-01T00:00:00.000Z');
-    const d2 = new Date('2026-02-02T00:00:00.000Z');
-
-    await createBulkMeterReadings(1, {
-      readings: [
-        { readAt: d1, readingValue: '10.0' },
-        { readAt: d2, readingValue: '15.0' },
-      ],
-    });
-
-    expect(postSpy).toHaveBeenCalledWith('/api/meters/1/readings/bulk', {
-      readings: [
-        { readAt: d1.toISOString(), readingValue: '10.0' },
-        { readAt: d2.toISOString(), readingValue: '15.0' },
-      ],
-    });
-  });
 
   it('serializes Date objects to ISO strings in getMeterUsage analytics query params', async () => {
     const getSpy = vi.spyOn(httpClient, 'get').mockResolvedValueOnce({

@@ -2,6 +2,7 @@ import { buildApp } from './app.js';
 import { env } from './config/env.js';
 import { pool } from './db/client.js';
 import { runMigrations } from './db/migrate.js';
+import { seed } from './db/seed.js';
 
 const app = buildApp();
 
@@ -9,6 +10,15 @@ async function start() {
   try {
     if (env.NODE_ENV !== 'test') {
       await runMigrations();
+
+      // Automatically seed demo scenarios on initial launch if database is clean
+      const countRes = await pool.query('SELECT count(*)::int AS count FROM service_locations;');
+      const locationCount = countRes.rows[0]?.count ?? 0;
+      if (locationCount === 0) {
+        app.log.info('🌱 Database is clean on startup. Auto-seeding 10 demo scenarios...');
+        await seed(app.db);
+        app.log.info('✅ Demo data auto-seeded successfully.');
+      }
     }
     await app.listen({ port: env.PORT, host: env.HOST });
     app.log.info(`🚀 Server listening at http://${env.HOST}:${env.PORT}`);

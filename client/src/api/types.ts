@@ -95,13 +95,6 @@ export interface CreateMeterInput {
   installedOn?: string;
 }
 
-export interface UpdateMeterInput {
-  status?: MeterStatus;
-  serialNumber?: string;
-  installedOn?: string;
-  servicePointId?: number;
-}
-
 // ============================================================================
 // Meter Reading & Usage Types
 // ============================================================================
@@ -117,15 +110,6 @@ export interface MeterReading {
 export interface CreateMeterReadingInput {
   readAt?: string | Date;
   readingValue: string | number;
-}
-
-export interface BulkMeterReadingsInput {
-  readings: CreateMeterReadingInput[];
-}
-
-export interface BulkMeterReadingsResponse {
-  count: number;
-  data: MeterReading[];
 }
 
 export interface QueryMeterReadingsParams extends PaginationParams {

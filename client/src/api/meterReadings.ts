@@ -1,8 +1,6 @@
 import { httpClient } from '../http/httpClient.js';
 import type { HttpResponse } from '../http/types.js';
 import type {
-  BulkMeterReadingsInput,
-  BulkMeterReadingsResponse,
   CreateMeterReadingInput,
   MeterReading,
   MeterUsageRecord,
@@ -62,27 +60,6 @@ export function createMeterReading(
 }
 
 /**
- * Batch insert readings in a single transaction.
- * POST /api/meters/:id/readings/bulk
- */
-export function createBulkMeterReadings(
-  meterId: number | string,
-  data: BulkMeterReadingsInput
-): Promise<HttpResponse<BulkMeterReadingsResponse>> {
-  const payload = {
-    readings: data.readings.map((r) => ({
-      ...r,
-      readAt: r.readAt instanceof Date ? r.readAt.toISOString() : r.readAt,
-    })),
-  };
-
-  return httpClient.post<BulkMeterReadingsResponse, typeof payload>(
-    `/api/meters/${meterId}/readings/bulk`,
-    payload
-  );
-}
-
-/**
  * Retrieve interval consumption analytics and usage delta calculations via the SQL window view.
  * GET /api/meters/:id/usage
  */
@@ -94,3 +71,4 @@ export function getMeterUsage(
     params: serializeDateParams(params),
   });
 }
+

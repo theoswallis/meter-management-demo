@@ -168,3 +168,21 @@ Build out the /meters/:id page. It will need to show all readings for the given 
 
 [2026-09-05 02:10:52 -06:00]
 Next up, service locations detail page. Editable details for the service location, ability to add meters. Same as the existing add meter workflow, select existing or add new service point. Page needs to show all meters, supporting pagination. Should be able to filter by or search service points.
+
+[2026-09-05 02:42:49 -06:00]
+I lost the notes you added for the scratch section of the readme. Can you jog my memory?
+
+[2026-09-05 03:30:42 -06:00]
+I've filled out the readme, now what we need to do is package everything up so a reviewer can have a running app with a single command. What is currently in the way of containerizing the frontend?
+
+[2026-09-05 03:34:05 -06:00]
+Plan looks good. Go ahead with it, and lets roll with port 8080
+
+[2026-09-05 04:01:16 -06:00]
+Alright! Go ahead and tear down any currently running processes from this project and restart docker desktop. Let me know when that's done, and I'll give the setup command a whirl!
+
+[2026-09-05 04:14:06 -06:00]
+I'm about ready to call this done. Please do a quick once-over for stale files or code such as endpoints that never wired up, scaffolding files that aren't used, etc. Don't delete anything yet, just present what you would delete.
+
+[2026-09-05 04:27:41 -06:00]
+prune the vue starter scaffolding files including the HelloWorld.spec.ts file. Backend endpoints that are implemented and tested are fine, but frontend wrappers should be pruned if they're not being used. Also, tear out the logging we set up to give you visibility while I poked around, the proxy logging that writes to traffic.log.

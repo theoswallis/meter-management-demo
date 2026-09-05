@@ -6,16 +6,6 @@ import type {
 } from './types.js';
 
 /**
- * List all service points belonging to a specific service location.
- * GET /api/service-locations/:id/service-points
- */
-export function getServicePointsByLocationId(
-  locationId: number | string
-): Promise<HttpResponse<ServicePoint[]>> {
-  return httpClient.get<ServicePoint[]>(`/api/service-locations/${locationId}/service-points`);
-}
-
-/**
  * Create a service point nested under a specific service location.
  * POST /api/service-locations/:id/service-points
  */
@@ -39,15 +29,3 @@ export function getServicePointById(
   return httpClient.get<ServicePoint>(`/api/service-points/${id}`);
 }
 
-/**
- * Create a service point at top level (requires serviceLocationId in payload).
- * POST /api/service-points
- */
-export function createServicePoint(
-  data: CreateServicePointInput & { serviceLocationId: number }
-): Promise<HttpResponse<ServicePoint>> {
-  return httpClient.post<ServicePoint, CreateServicePointInput & { serviceLocationId: number }>(
-    '/api/service-points',
-    data
-  );
-}
