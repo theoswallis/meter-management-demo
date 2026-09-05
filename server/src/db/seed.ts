@@ -1,5 +1,5 @@
 import { sql } from 'drizzle-orm';
-import { db, pool } from './index.js';
+import { db as defaultDb, pool } from './client.js';
 import {
   meters,
   meterReadings,
@@ -19,7 +19,7 @@ function daysAgoDateStr(days: number): string {
   return daysAgo(days).toISOString().split('T')[0];
 }
 
-async function seed() {
+export async function seed(db: any = defaultDb) {
   console.log('🌱 Starting database seeding for demo scenarios...\n');
 
   // 0. Clean slate
@@ -116,7 +116,7 @@ async function seed() {
   const mfPoints = await db.insert(servicePoints).values(mfPointsData).returning();
 
   // Attach electric meters to each apartment in the multi-family complex
-  const mfMetersData = mfPoints.map((pt, idx) => ({
+  const mfMetersData = mfPoints.map((pt: any, idx: number) => ({
     servicePointId: pt.id,
     serviceLocationId: mfLoc.id,
     serialNumber: `MTR-MF-ELEC-${1000 + idx}`,
@@ -554,4 +554,8 @@ async function main() {
   }
 }
 
-main();
+// Only run main directly if invoked via CLI
+if (process.argv[1]?.endsWith('seed.ts') || process.argv[1]?.endsWith('seed.js')) {
+  main();
+}
+

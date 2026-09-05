@@ -1,8 +1,10 @@
 import { sql } from 'drizzle-orm';
 import type { FastifyPluginAsync } from 'fastify';
-import { db } from '../db/index.js';
+import { db as defaultDb } from '../db/client.js';
 
 export const healthRoutes: FastifyPluginAsync = async (fastify) => {
+  const db = fastify.db || defaultDb;
+
   fastify.get('/health', async (_request, reply) => {
     let dbStatus = 'disconnected';
     let latencyMs = -1;

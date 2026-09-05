@@ -14,6 +14,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "seed": "tsx src/db/seed.ts",
+    "test": "tsx --test --test-concurrency=1 test/**/*.test.ts",
     "verify:usage": "node scripts/verify-usage-view.js",
     "benchmark:db": "node scripts/benchmark-indexes.js"
   },
@@ -25,6 +26,7 @@
     "zod": "^4.5.4"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "^0.5.8",
     "@types/node": "^26.4.1",
     "@types/pg": "^8.23.1",
     "drizzle-kit": "^0.31.10",

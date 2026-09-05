@@ -1,6 +1,6 @@
 import { buildApp } from './app.js';
 import { env } from './config/env.js';
-import { pool } from './db/index.js';
+import { pool } from './db/client.js';
 
 const app = buildApp();
 

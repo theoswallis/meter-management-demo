@@ -54,3 +54,29 @@ write a temporary script to verify the math from the usage view now that we have
 
 [2026-09-04 19:59:11 -06:00]
 I had to step away from my desk for a couple of hours, please give me a short summary of what we've managed to build so far.
+
+[2026-09-04 20:16:48 -06:00]
+rename index.ts in the db directory to client.ts and update any necessary references
+
+[2026-09-04 20:25:58 -06:00]
+register an error handler function in app.ts, use Zod to handle validation errors, handle postgres error codes for violations of the constraints we set up in our db design, and fallback to a 500 error
+
+[2026-09-04 20:32:11 -06:00]
+Less granular, I don't want the error handler checking the actual constraints themselves, the general cases are fine, go ahead and scrap the getConstraintMessage function and generalize the returned messages to their corresponding pg error codes rather than grabbing the exact constraint and constructing a message.
+
+[2026-09-04 20:38:11 -06:00]
+Alright now that we have app.ts built out, it's time to build a simple integration test harness. I want to use pglite and our seed data to spin up a dummy database for running tests against.
+
+[2026-09-04 20:49:22 -06:00]
+Looks like we're spinning up multiple instances of the test context across the test suite. I like the idea of adding some teardown code to truncate the db between tests so we can reuse one instance and save time from cold starts. Are the current tests executing in sequence or are they running parallel? And if in parallel, to what extent?
+
+[2026-09-04 21:32:46 -06:00]
+now that we have a working integration test harness and server, time to build out the API. Please utilize test-driven development and build out endpoints for: getting service locations, getting a service location by ID, posting a service location, getting service points by service location ID (use format /api/service-locations/${id}/service-points, and follow that format where applicable), getting a service point by ID, getting meters by service location ID, getting meters by service point ID, getting a meter by ID, posting a service point, posting a meter, getting meter reads by meter id (must support pagination), posting a meter read. Please organize these for readability and maintainability, I listed them in the order I thought of them, not with any specific organization method. In addition, look over the aforementioned endpoints and point out any potential oversights or antipatterns, and propose any additional endpoints you think may be necessary and why.
+
+[2026-09-04 21:45:09 -06:00]
+I agree with all proposed additional endpoints. Please implement using TDD. Scrap the /reads alias and update any related references to readings. Once completed and verified, please draft a report/walkthrough of your test design for the api for me to review, including reasoning for non-obvious test cases.
+
+[2026-09-04 22:00:28 -06:00]
+[Approved] test_design_walkthrough.md
+
+
